@@ -12,7 +12,7 @@ from pybedtools import BedTool
 def get_num_bp(bt):
     return np.sum([i.length for i in bt])
 
-if not len(sys.argv) == 4:
+if not len(sys.argv) == 5:
     raise Exception('Must provide 3 BED files.')
 
 f1 = sys.argv[1]
