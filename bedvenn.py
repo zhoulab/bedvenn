@@ -8,6 +8,8 @@ from matplotlib_venn import venn2, venn3
 
 from pybedtools import BedTool
 
+# TODO: save intersect file
+
 
 def get_num_bp(bt):
     return np.sum([i.length for i in bt])
@@ -20,8 +22,8 @@ def get_label(filepath):
 
 f1 = sys.argv[1]
 f2 = sys.argv[2]
-b1 = BedTool(f1)
-b2 = BedTool(f2)
+b1 = BedTool(f1).merge()
+b2 = BedTool(f2).merge()
 
 if len(sys.argv) == 4:
     out_fn = sys.argv[3]
@@ -37,7 +39,7 @@ if len(sys.argv) == 4:
 elif len(sys.argv) == 5:
     out_fn = sys.argv[4]
     f3 = sys.argv[3]
-    b3 = BedTool(f3)
+    b3 = BedTool(f3).merge()
 
     b12_intersect = b1.intersect(b2)
     b13_intersect = b1.intersect(b3)
