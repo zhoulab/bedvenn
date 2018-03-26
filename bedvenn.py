@@ -12,6 +12,12 @@ from pybedtools import BedTool
 def get_num_bp(bt):
     return np.sum([i.length for i in bt])
 
+
+def get_label(filepath):
+    """Return filename without extension"""
+    return os.path.splitext(os.path.basename(filepath))[0]
+
+
 f1 = sys.argv[1]
 f2 = sys.argv[2]
 b1 = BedTool(f1)
@@ -26,8 +32,8 @@ if len(sys.argv) == 4:
     subsets = {'01': n_2,
                '10': n_1,
                '11': n_12}
-    venn2(subsets=subsets, set_labels=(os.path.basename(f1),
-                                       os.path.basename(f2)))
+    venn2(subsets=subsets, set_labels=(get_label(f1),
+                                       get_label(f2)))
 elif len(sys.argv) == 5:
     out_fn = sys.argv[4]
     f3 = sys.argv[3]
@@ -54,9 +60,9 @@ elif len(sys.argv) == 5:
                '110': n_12,
                '111': n_123}
 
-    venn3(subsets=subsets, set_labels=(os.path.basename(f1),
-                                       os.path.basename(f2),
-                                       os.path.basename(f3)))
+    venn3(subsets=subsets, set_labels=(get_label(f1),
+                                       get_label(f2),
+                                       get_label(f3)))
 else:
     raise Exception('Must provide 3 BED files.')
 
