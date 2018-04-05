@@ -2,6 +2,7 @@
 
 ## Usage
 
+    $ source /ufrc/zhou/share/projects/bioinformatics/hpc_set_env
     $ python bedvenn.py file1.bed file2.bed output.png
 
 or
