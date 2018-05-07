@@ -12,7 +12,11 @@ from pybedtools import BedTool
 
 
 def get_num_bp(bt):
-    return np.sum([i.length for i in bt])
+    return int(np.sum([i.length for i in bt]))
+
+
+def subset_label_formatter(s):
+    return '{:.1f}kb'.format(float(s) / 1000)
 
 
 def get_label(filepath):
@@ -27,6 +31,7 @@ b2 = BedTool(f2).merge()
 
 if len(sys.argv) == 4:
     out_fn = sys.argv[3]
+    # TODO: check png
     b12_intersect = b1.intersect(b2)
     n_12 = get_num_bp(b12_intersect)
     n_1 = get_num_bp(b1) - n_12
@@ -54,6 +59,15 @@ elif len(sys.argv) == 5:
     n_2 = get_num_bp(b2) - n_12 - n_23 - n_123
     n_3 = get_num_bp(b3) - n_13 - n_23 - n_123
 
+    print matplotlib.rcParams['font.family']
+    print '123 only:', n_123
+    print '12 only:', n_12
+    print '23 only:', n_23
+    print '13 only:', n_13
+    print '1 only:', n_1
+    print '2 only:', n_2
+    print '3 only:', n_3
+
     subsets = {'001': n_3,
                '010': n_2,
                '011': n_23,
@@ -64,8 +78,7 @@ elif len(sys.argv) == 5:
 
     venn3(subsets=subsets, set_labels=(get_label(f1),
                                        get_label(f2),
-                                       get_label(f3)))
+                                       get_label(f3)), subset_label_formatter=subset_label_formatter)
+    plt.savefig(out_fn)
 else:
     raise Exception('Must provide 3 BED files.')
-
-plt.savefig(out_fn)
