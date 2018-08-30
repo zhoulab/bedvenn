@@ -19,7 +19,7 @@ def subset_label_formatter(s):
     return '{:.1f}kb'.format(float(s) / 1000)
 
 
-def get_label(filepath):
+def get_basename(filepath):
     """Return filename without extension"""
     return os.path.splitext(os.path.basename(filepath))[0]
 
@@ -28,6 +28,8 @@ f1 = sys.argv[1]
 f2 = sys.argv[2]
 b1 = BedTool(f1).merge()
 b2 = BedTool(f2).merge()
+filename1 = get_basename(f1)
+filename2 = get_basename(f2)
 
 if len(sys.argv) == 4:
     out_fn = sys.argv[3]
@@ -39,13 +41,13 @@ if len(sys.argv) == 4:
     subsets = {'01': n_2,
                '10': n_1,
                '11': n_12}
-    venn2(subsets=subsets, set_labels=(get_label(f1),
-                                       get_label(f2)))
+    venn2(subsets=subsets, set_labels=(filename1, filename2))
     plt.savefig(out_fn)
 elif len(sys.argv) == 5:
     out_fn = sys.argv[4]
     f3 = sys.argv[3]
     b3 = BedTool(f3).merge()
+    filename3 = get_basename(f3)
 
     b12_intersect = b1.intersect(b2)
     b13_intersect = b1.intersect(b3)
@@ -77,9 +79,10 @@ elif len(sys.argv) == 5:
                '110': n_12,
                '111': n_123}
 
-    venn3(subsets=subsets, set_labels=(get_label(f1),
-                                       get_label(f2),
-                                       get_label(f3)), subset_label_formatter=subset_label_formatter)
+    venn3(subsets=subsets, set_labels=(filename1,
+                                       filename2,
+                                       filename3),
+          subset_label_formatter=subset_label_formatter)
     plt.savefig(out_fn)
 else:
     raise Exception('Must provide 3 BED files.')
