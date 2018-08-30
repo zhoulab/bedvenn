@@ -12,11 +12,13 @@ from pybedtools import BedTool
 
 
 def get_num_bp(bt):
+    """Return number of base pairs in a BedTool interval"""
     return int(np.sum([i.length for i in bt]))
 
 
-def subset_label_formatter(s):
-    return '{:.1f}kb'.format(float(s) / 1000)
+def subset_label_formatter(num_base_pairs):
+    """Return number of base pairs in kilobases"""
+    return '{:.1f}kb'.format(float(num_base_pairs) / 1000)
 
 
 def get_basename(filepath):
@@ -85,4 +87,4 @@ elif len(sys.argv) == 5:
           subset_label_formatter=subset_label_formatter)
     plt.savefig(out_fn)
 else:
-    raise Exception('Must provide 3 BED files.')
+    raise Exception('Must provide 2 or 3 BED files.')
