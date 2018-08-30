@@ -41,6 +41,7 @@ if len(sys.argv) == 4:
                '11': n_12}
     venn2(subsets=subsets, set_labels=(get_label(f1),
                                        get_label(f2)))
+    plt.savefig(out_fn)
 elif len(sys.argv) == 5:
     out_fn = sys.argv[4]
     f3 = sys.argv[3]
